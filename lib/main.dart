@@ -123,16 +123,17 @@ class SecondPage extends StatelessWidget {
   }
 
   Widget _rowIconAndText() {
-    return Row(
+    return Center(
+        child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IconButton(icon: Icon(Icons.add), onPressed: () {}),
-        Container(width: 8),
-        Text(
-          'ADD',
-          style: TextStyle(color: Colors.black),
+        FlatButton.icon(
+          onPressed: () {},
+          icon: Icon(Icons.add),
+          label: Text('ADD'),
+          textColor: Colors.black,
         )
       ],
-    );
+    ));
   }
 }
