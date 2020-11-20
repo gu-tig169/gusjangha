@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'SecondPage.dart';
+import 'model.dart';
+import 'TodoList.dart';
 
 void main() {
-  runApp(MyApp());
+  var state = NewState();
+  runApp(ChangeNotifierProvider(create: (context) => state, child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -11,22 +16,35 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  HomePageState createState() => HomePageState();
+}
+
+class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: Text('TIG 169 TODO', style: TextStyle(color: Colors.black)),
           actions: [
-            _popUpMenu(),
+            _dropDownMenu(),
           ]),
-      body: _todoList(),
+      body: Consumer<NewState>(
+        builder: (context, state, child) => TodoList(state.list),
+      ),
       floatingActionButton: Container(
         margin: EdgeInsets.only(left: 340, right: 18),
         child: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => SecondPage()));
+          onPressed: () async {
+            var newThing = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SecondPage(ThingsTodo(
+                        checkbox: false, text: 'What are you going do to?'))));
+            if (newThing != null) {
+              Provider.of<NewState>(context, listen: false).addThings(newThing);
+            }
           },
           child: Icon(
             Icons.add,
@@ -38,102 +56,23 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _todoList() {
-    var list = [
-      'Write a book',
-      'Do homework',
-      'Tidy room',
-      'Watch TV',
-      'Nap',
-      'Shop groceries',
-      'Have fun',
-      'Meditate'
-    ];
-
-    return ListView(
-      children: list.map((things) => _thingsToDo(things)).toList(),
-    );
-  }
-
-  Widget _thingsToDo(text) {
-    return ListTile(
-      leading: Checkbox(value: false, onChanged: (val) {}),
-      title: Text(text),
-      trailing: IconButton(
-        icon: Icon(Icons.cancel_outlined, color: Colors.black),
-        onPressed: () {},
-      ),
-    );
-  }
-
-  Widget _popUpMenu() {
-    return PopupMenuButton(
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          child: Text('All'),
-        ),
-        PopupMenuItem(
-          child: Text('Done'),
-        ),
-        PopupMenuItem(child: Text('Undone')),
+  Widget _dropDownMenu() {
+    return DropdownButton(
+      items: [
+        DropdownMenuItem(child: Text('All')),
+        DropdownMenuItem(child: Text('Done')),
+        DropdownMenuItem(child: Text('Undone')),
       ],
       icon: Icon(
         Icons.menu,
-        size: 35,
+        size: 25,
         color: Colors.black,
       ),
+      onChanged: (value) {
+        setState(() {
+          value = value;
+        });
+      },
     );
-  }
-}
-
-class SecondPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppBar(
-            title: Text('TIG 169 TODO', style: TextStyle(color: Colors.black)),
-          ),
-          _textField(),
-          _rowIconAndText(),
-        ],
-      ),
-    ));
-  }
-
-  Widget _textField() {
-    return Container(
-        width: 351,
-        height: 50,
-        margin: EdgeInsets.only(left: 30, right: 30, top: 39),
-        child: TextField(
-          decoration: InputDecoration(
-            hintText: 'What are you going do to?',
-            enabledBorder:
-                OutlineInputBorder(borderSide: BorderSide(width: 4.0)),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 4.0),
-            ),
-          ),
-        ));
-  }
-
-  Widget _rowIconAndText() {
-    return Center(
-        child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        FlatButton.icon(
-          onPressed: () {},
-          icon: Icon(Icons.add),
-          label: Text('ADD'),
-          textColor: Colors.black,
-        )
-      ],
-    ));
   }
 }
