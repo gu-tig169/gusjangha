@@ -18,6 +18,9 @@ class NewState extends ChangeNotifier {
     ThingsTodo(checkbox: false, text: 'Meditate'),
   ];
   List<ThingsTodo> get list => _list;
+  String _sortBy = 'All';
+
+  String get sortBy => _sortBy;
 
   void addThings(ThingsTodo thing) {
     _list.add(thing);
@@ -26,6 +29,11 @@ class NewState extends ChangeNotifier {
 
   void removeThings(ThingsTodo thing) {
     _list.remove(thing);
+    notifyListeners();
+  }
+
+  void sortFilterBy(String sortBy) {
+    this._sortBy = sortBy;
     notifyListeners();
   }
 }

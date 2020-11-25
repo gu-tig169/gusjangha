@@ -54,15 +54,14 @@ class SecondPageState extends State<SecondPage> {
         height: 50,
         margin: EdgeInsets.only(left: 30, right: 30, top: 39),
         child: TextField(
-          controller: textEditingController,
-          decoration: InputDecoration(
-            enabledBorder:
-                OutlineInputBorder(borderSide: BorderSide(width: 4.0)),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black, width: 4.0),
-            ),
-          ),
-        ));
+            controller: textEditingController,
+            decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    borderSide: BorderSide(color: Colors.black, width: 2)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    borderSide: BorderSide(color: Colors.black, width: 2)))));
   }
 
   Widget _rowIconAndText(context) {
