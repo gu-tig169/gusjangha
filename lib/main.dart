@@ -6,6 +6,7 @@ import 'TodoList.dart';
 
 void main() {
   var state = NewState();
+  state.getList();
   runApp(ChangeNotifierProvider(create: (context) => state, child: MyApp()));
 }
 
@@ -30,10 +31,7 @@ class HomePageState extends State<HomePage> {
           actions: [
             _dropDownMenu(),
           ]),
-      body: Consumer<NewState>(
-        builder: (context, state, child) =>
-            TodoList(_sortList(state.list, state.sortBy)),
-      ),
+      body: _viewList(),
       floatingActionButton: Container(
         margin: EdgeInsets.only(left: 340, right: 18),
         child: FloatingActionButton(
@@ -55,6 +53,12 @@ class HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Widget _viewList() {
+    return Consumer<NewState>(
+        builder: (context, state, child) =>
+            TodoList(_sortList(state.list, state.sortBy)));
   }
 
   Widget _dropDownMenu() {

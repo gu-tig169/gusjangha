@@ -1,39 +1,57 @@
 import 'package:flutter/material.dart';
+import 'FetchFromInternet.dart';
 
 class ThingsTodo {
   bool checkbox;
   String text;
-  ThingsTodo({this.checkbox, this.text});
+  String id;
+  ThingsTodo({this.checkbox, this.text, this.id});
+
+  static Map<String, dynamic> toJson(ThingsTodo thing) {
+    return {'title': thing.text, 'done': thing.checkbox};
+  }
+
+  static ThingsTodo fromJson(Map<String, dynamic> jsonData) {
+    return ThingsTodo(
+      id: jsonData['id'],
+      text: jsonData['title'],
+      checkbox: jsonData['done'],
+    );
+  }
 }
 
 class NewState extends ChangeNotifier {
-  List<ThingsTodo> _list = [
-    ThingsTodo(checkbox: false, text: 'Write a book'),
-    ThingsTodo(checkbox: false, text: 'Do homework'),
-    ThingsTodo(checkbox: true, text: 'Tidy room'),
-    ThingsTodo(checkbox: false, text: 'Watch TV'),
-    ThingsTodo(checkbox: false, text: 'Nap'),
-    ThingsTodo(checkbox: false, text: 'Shop groceries'),
-    ThingsTodo(checkbox: false, text: 'Have fun'),
-    ThingsTodo(checkbox: false, text: 'Meditate'),
-  ];
-  List<ThingsTodo> get list => _list;
-  String _sortBy = 'All';
+  List<ThingsTodo> _list = [];
 
+  List<ThingsTodo> get list => _list;
+
+  String _sortBy = 'All';
   String get sortBy => _sortBy;
 
-  void addThings(ThingsTodo thing) {
-    _list.add(thing);
+  Future getList() async {
+    List<ThingsTodo> list = await FetchFromInternet.getTodoList();
+    _list = list;
     notifyListeners();
   }
 
-  void removeThings(ThingsTodo thing) {
-    _list.remove(thing);
-    notifyListeners();
+  void addThings(ThingsTodo thing) async {
+    await FetchFromInternet.addToApi(thing);
+    await getList();
+  }
+
+  void removeThings(ThingsTodo thing) async {
+    await FetchFromInternet.deleteApi(thing.id);
+    await getList();
   }
 
   void sortFilterBy(String sortBy) {
     this._sortBy = sortBy;
     notifyListeners();
+  }
+
+  void setCheckbox(ThingsTodo thing, bool checkbox) async {
+    thing.checkbox = checkbox;
+    await FetchFromInternet.updateApi(thing.id, thing);
+    await getList();
   }
 }
