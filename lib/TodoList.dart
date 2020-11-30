@@ -34,9 +34,8 @@ class _TodoListState extends State<TodoList> {
           controlAffinity: ListTileControlAffinity.leading,
           value: thing.checkbox,
           onChanged: (bool value) {
-            setState(() {
-              thing.checkbox = value;
-            });
+            var state = Provider.of<NewState>(context, listen: false);
+            state.setCheckbox(thing, value);
           });
     }
     return CheckboxListTile(
@@ -51,9 +50,8 @@ class _TodoListState extends State<TodoList> {
         controlAffinity: ListTileControlAffinity.leading,
         value: thing.checkbox,
         onChanged: (bool value) {
-          setState(() {
-            thing.checkbox = value;
-          });
+          var state = Provider.of<NewState>(context, listen: false);
+          state.setCheckbox(thing, value);
         });
   }
 }

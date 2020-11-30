@@ -6,6 +6,7 @@ import 'TodoList.dart';
 
 void main() {
   var state = NewState();
+  state.getList();
   runApp(ChangeNotifierProvider(create: (context) => state, child: MyApp()));
 }
 
@@ -30,9 +31,7 @@ class HomePageState extends State<HomePage> {
           actions: [
             _dropDownMenu(),
           ]),
-      body: Consumer<NewState>(
-        builder: (context, state, child) => TodoList(state.list),
-      ),
+      body: _viewList(),
       floatingActionButton: Container(
         margin: EdgeInsets.only(left: 340, right: 18),
         child: FloatingActionButton(
@@ -56,23 +55,44 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _viewList() {
+    return Consumer<NewState>(
+        builder: (context, state, child) =>
+            TodoList(_sortList(state.list, state.sortBy)));
+  }
+
   Widget _dropDownMenu() {
     return DropdownButton(
-      items: [
-        DropdownMenuItem(child: Text('All')),
-        DropdownMenuItem(child: Text('Done')),
-        DropdownMenuItem(child: Text('Undone')),
-      ],
-      icon: Icon(
-        Icons.menu,
-        size: 25,
-        color: Colors.black,
-      ),
-      onChanged: (value) {
-        setState(() {
-          value = value;
+        items: [
+          DropdownMenuItem(
+            child: Text('All'),
+            value: 'All',
+          ),
+          DropdownMenuItem(
+            child: Text('Done'),
+            value: 'Done',
+          ),
+          DropdownMenuItem(
+            child: Text('Undone'),
+            value: 'Undone',
+          ),
+        ],
+        icon: Icon(
+          Icons.menu,
+          size: 25,
+          color: Colors.black,
+        ),
+        onChanged: (value) {
+          Provider.of<NewState>(context, listen: false).sortFilterBy(value);
         });
-      },
-    );
+  }
+
+  List<ThingsTodo> _sortList(list, sortBy) {
+    if (sortBy == 'All') return list;
+    if (sortBy == 'Done')
+      return list.where((thing) => thing.checkbox == true).toList();
+    if (sortBy == 'Undone')
+      return list.where((thing) => thing.checkbox == false).toList();
+    return null;
   }
 }
