@@ -7,8 +7,8 @@ class ThingsTodo {
   String id;
   ThingsTodo({this.checkbox, this.text, this.id});
 
-  static Map<String, dynamic> toJson(ThingsTodo thing) {
-    return {'title': thing.text, 'done': thing.checkbox};
+  static Map<String, dynamic> toJson(ThingsTodo task) {
+    return {'title': task.text, 'done': task.checkbox};
   }
 
   static ThingsTodo fromJson(Map<String, dynamic> jsonData) {
@@ -34,13 +34,13 @@ class NewState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addThings(ThingsTodo thing) async {
-    await FetchFromInternet.addToApi(thing);
+  void addTask(ThingsTodo task) async {
+    await FetchFromInternet.addToApi(task);
     await getList();
   }
 
-  void removeThings(ThingsTodo thing) async {
-    await FetchFromInternet.deleteApi(thing.id);
+  void removeTask(ThingsTodo task) async {
+    await FetchFromInternet.deleteApi(task.id);
     await getList();
   }
 
@@ -49,9 +49,9 @@ class NewState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCheckbox(ThingsTodo thing, bool checkbox) async {
-    thing.checkbox = checkbox;
-    await FetchFromInternet.updateApi(thing.id, thing);
+  void setCheckbox(ThingsTodo task, bool checkbox) async {
+    task.checkbox = checkbox;
+    await FetchFromInternet.updateApi(task.id, task);
     await getList();
   }
 }

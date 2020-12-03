@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:tig169app/model.dart';
 
 class SecondPage extends StatefulWidget {
-  final ThingsTodo thing;
-  SecondPage(this.thing);
+  final ThingsTodo task;
+  SecondPage(this.task);
 
   @override
   State<StatefulWidget> createState() {
-    return SecondPageState(thing);
+    return SecondPageState(task);
   }
 }
 
@@ -17,11 +17,11 @@ class SecondPageState extends State<SecondPage> {
 
   TextEditingController textEditingController;
 
-  SecondPageState(ThingsTodo thing) {
-    this.text = thing.text;
-    this.checkbox = thing.checkbox;
+  SecondPageState(ThingsTodo task) {
+    this.text = task.text;
+    this.checkbox = task.checkbox;
 
-    textEditingController = TextEditingController(text: thing.text);
+    textEditingController = TextEditingController(text: task.text);
 
     textEditingController.addListener(() {
       setState(() {
