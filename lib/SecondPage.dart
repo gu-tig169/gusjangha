@@ -56,6 +56,7 @@ class SecondPageState extends State<SecondPage> {
         child: TextField(
             controller: textEditingController,
             decoration: InputDecoration(
+                hintText: 'What are you going do to?',
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(color: Colors.black, width: 2)),

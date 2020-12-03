@@ -39,8 +39,8 @@ class HomePageState extends State<HomePage> {
             var newTask = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => SecondPage(ThingsTodo(
-                        checkbox: false, text: 'What are you going do to?'))));
+                    builder: (context) =>
+                        SecondPage(ThingsTodo(checkbox: false))));
             if (newTask != null) {
               Provider.of<NewState>(context, listen: false).addTask(newTask);
             }
