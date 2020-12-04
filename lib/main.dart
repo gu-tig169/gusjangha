@@ -36,13 +36,13 @@ class HomePageState extends State<HomePage> {
         margin: EdgeInsets.only(left: 340, right: 18),
         child: FloatingActionButton(
           onPressed: () async {
-            var newThing = await Navigator.push(
+            var newTask = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => SecondPage(ThingsTodo(
-                        checkbox: false, text: 'What are you going do to?'))));
-            if (newThing != null) {
-              Provider.of<NewState>(context, listen: false).addThings(newThing);
+                    builder: (context) =>
+                        SecondPage(ThingsTodo(checkbox: false))));
+            if (newTask != null) {
+              Provider.of<NewState>(context, listen: false).addTask(newTask);
             }
           },
           child: Icon(
@@ -90,9 +90,9 @@ class HomePageState extends State<HomePage> {
   List<ThingsTodo> _sortList(list, sortBy) {
     if (sortBy == 'All') return list;
     if (sortBy == 'Done')
-      return list.where((thing) => thing.checkbox == true).toList();
+      return list.where((task) => task.checkbox == true).toList();
     if (sortBy == 'Undone')
-      return list.where((thing) => thing.checkbox == false).toList();
+      return list.where((task) => task.checkbox == false).toList();
     return null;
   }
 }

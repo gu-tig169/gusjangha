@@ -13,45 +13,44 @@ class TodoList extends StatefulWidget {
 class _TodoListState extends State<TodoList> {
   Widget build(BuildContext context) {
     return ListView(
-        children:
-            widget.list.map((thing) => _thingsItem(context, thing)).toList());
+        children: widget.list.map((task) => _taskItem(context, task)).toList());
   }
 
-  Widget _thingsItem(context, thing) {
-    if (thing.checkbox == true) {
+  Widget _taskItem(context, task) {
+    if (task.checkbox == true) {
       return CheckboxListTile(
           title: Text(
-            thing.text,
+            task.text,
             style: TextStyle(decoration: TextDecoration.lineThrough),
           ),
           secondary: IconButton(
             icon: Icon(Icons.cancel_outlined, color: Colors.black),
             onPressed: () {
               var state = Provider.of<NewState>(context, listen: false);
-              state.removeThings(thing);
+              state.removeTask(task);
             },
           ),
           controlAffinity: ListTileControlAffinity.leading,
-          value: thing.checkbox,
+          value: task.checkbox,
           onChanged: (bool value) {
             var state = Provider.of<NewState>(context, listen: false);
-            state.setCheckbox(thing, value);
+            state.setCheckbox(task, value);
           });
     }
     return CheckboxListTile(
-        title: Text(thing.text),
+        title: Text(task.text),
         secondary: IconButton(
           icon: Icon(Icons.cancel_outlined, color: Colors.black),
           onPressed: () {
             var state = Provider.of<NewState>(context, listen: false);
-            state.removeThings(thing);
+            state.removeTask(task);
           },
         ),
         controlAffinity: ListTileControlAffinity.leading,
-        value: thing.checkbox,
+        value: task.checkbox,
         onChanged: (bool value) {
           var state = Provider.of<NewState>(context, listen: false);
-          state.setCheckbox(thing, value);
+          state.setCheckbox(task, value);
         });
   }
 }
